@@ -1,0 +1,18 @@
+# macOS metadata and AppleDouble files
+._*
+**/*._*
+.DS_Store
+**/.DS_Store
+
+# Git & IDE files
+.git
+.gitignore
+.gitattributes
+.idea
+*.iml
+
+# Build output
+target/
+*.jar
+*.log
+

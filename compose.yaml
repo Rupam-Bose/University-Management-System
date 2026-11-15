@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-dbjm2nou01pc73fsher0-a.virginia-postgres.render.com/universitymanagementsystem?currentSchema=public
+      - SPRING_DATASOURCE_USERNAME=universitymanagementsystem_user
+      - SPRING_DATASOURCE_PASSWORD=ebKobdybJ2ayCuz5M8Pzr5fq9dYOT4sI
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    restart: unless-stopped

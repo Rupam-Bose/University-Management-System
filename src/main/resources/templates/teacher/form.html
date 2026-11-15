@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${isEdit} ? 'Edit Teacher' : 'Add New Teacher'">Teacher Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f0f2f5; }
+        .form-card { border: none; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #533483, #0f3460);">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/dashboard">🎓 University MS</a>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/profile" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-person-circle"></i> My Profile
+            </a>
+            <span class="text-white opacity-75 small" sec:authentication="name"></span>
+            <form th:action="@{/logout}" method="post" class="m-0">
+                <button type="submit" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h4 class="fw-bold mb-0">
+                    <span th:if="${isEdit}">✏️ Edit Teacher</span>
+                    <span th:unless="${isEdit}">➕ Add New Teacher</span>
+                </h4>
+                <a href="/teachers" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-arrow-left"></i> Back to Teachers List
+                </a>
+            </div>
+
+            <!-- Error message if any -->
+            <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <span th:text="${errorMessage}">Error</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="card form-card">
+                <div class="card-body p-4">
+                    <form th:action="${isEdit} ? @{'/teachers/update/' + ${teacher.id}} : @{/teachers/save}"
+                          th:object="${teacher}"
+                          method="post">
+
+                        <input type="hidden" th:if="${isEdit}" th:field="*{id}"/>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-semibold">Teacher Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" th:field="*{name}"
+                                   placeholder="e.g. Dr. John Smith" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" th:field="*{email}"
+                                   placeholder="e.g. jsmith@uni.com" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-semibold">
+                                Password
+                                <span th:if="${!isEdit}" class="text-danger">*</span>
+                                <span th:if="${isEdit}" class="text-muted small fw-normal">(Leave blank to keep unchanged)</span>
+                            </label>
+                            <input type="password" class="form-control" id="password" th:field="*{password}"
+                                   placeholder="••••••••" th:required="${!isEdit}">
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="/teachers" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="bi bi-check-circle me-1"></i>
+                                <span th:text="${isEdit} ? 'Update Teacher' : 'Save Teacher'">Save</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
