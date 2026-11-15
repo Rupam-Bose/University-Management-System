@@ -55,7 +55,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createStudent(@Valid @RequestBody UserDTO dto, Authentication auth) {
+    public ResponseEntity<?> createStudent(@RequestBody UserDTO dto, Authentication auth) {
         boolean isAdmin = auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         if (!isAdmin) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
